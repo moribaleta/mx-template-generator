@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-const { existsSync, mkdirSync } = require('fs');
+const { existsSync, mkdirSync, readFileSync } = require('fs');
 const { capitalizeFirstLetter, lowerCaseFirstLetter } = require('../lib/utils');
-const { createFile } = require('../lib/templates');
-const config = require('../lib/templates/config');
+const { createFile, getSettingsFile } = require('../lib/templates');
 
 const args = process.argv;
 const pathName = process.cwd();
@@ -18,6 +17,7 @@ var fileName =
   })[0] || '';
 
 if (fileName.length <= 0 || pathName.length <= 0) {
+  console.log('filename not provided');
   return;
 }
 
@@ -25,6 +25,30 @@ fileName = fileName.split('=')[1];
 
 fileName = capitalizeFirstLetter(fileName);
 let folderName = pathName + '/' + lowerCaseFirstLetter(fileName);
+
+const settingsObject = getSettingsFile();
+
+if (!settingsObject) {
+  console.log('config settings doesnt exist');
+  return;
+}
+
+var configFilePath = settingsObject.configPath;
+
+if (configFilePath.length <= 0) {
+  configFilePath = '../lib/templates/config.js';
+}
+
+const config = require(configFilePath);
+
+if (!config) {
+  console.log('cannot find config.js from the given settings');
+  return;
+}
+
+configFilePath = configFilePath.replace('/config.js', '').replace('../', '');
+
+console.log(config);
 
 if (existsSync(folderName)) {
   console.log('directory already exist');
@@ -36,5 +60,5 @@ mkdirSync(folderName, {
 });
 
 config.forEach((config) => {
-  createFile(config, folderName, fileName);
+  createFile(configFilePath, config, folderName, fileName);
 });
