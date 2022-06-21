@@ -1,0 +1,2 @@
+import ${fileName} from './${fileName}';
+export default ${fileName};

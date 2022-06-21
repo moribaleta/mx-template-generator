@@ -1,0 +1,15 @@
+{
+  "name": "react-dir-helper",
+  "version": "1.0.0",
+  "description": "react script helpers",
+  "main": "bin/index.js",
+  "scripts": {
+    "react-dir-helper": "bin/index.js"
+  },
+  "bin": {
+    "react-dir-helper": "./bin/index.js"
+  },
+  "preferGlobal": true,
+  "author": "moribaleta",
+  "license": "ISC"
+}
