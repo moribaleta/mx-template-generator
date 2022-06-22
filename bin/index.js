@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { existsSync, mkdirSync, readFileSync } = require('fs');
+const { existsSync, mkdirSync } = require('fs');
 const { capitalizeFirstLetter, lowerCaseFirstLetter } = require('../lib/utils');
 const { createFile, getSettingsFile } = require('../lib/templates');
 

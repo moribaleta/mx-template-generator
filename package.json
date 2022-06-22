@@ -1,5 +1,5 @@
 {
-  "name": "react-dir-helper",
+  "name": "mx-template-generator",
   "version": "1.0.0",
   "description": "react script helpers",
   "main": "bin/index.js",
