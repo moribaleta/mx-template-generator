@@ -1,6 +1,6 @@
 {
   "name": "mx-template-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react script helpers",
   "main": "bin/index.js",
   "scripts": {
