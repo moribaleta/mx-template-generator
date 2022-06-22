@@ -38,6 +38,7 @@ const main = (args, pathName) => {
   if (configFilePath.length <= 0) {
     configFilePath = '../lib/templates/config.js';
   }
+  console.log("config file location: %o", configFilePath)
 
   const config = require(configFilePath);
 
