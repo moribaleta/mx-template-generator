@@ -11,5 +11,9 @@
   },
   "preferGlobal": true,
   "author": "moribaleta",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moribaleta/mx-template-generator.git"
+  }
 }
