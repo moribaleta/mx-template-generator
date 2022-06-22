@@ -21,10 +21,10 @@ it is supposed to be an array containing an element with a `templateName` and `t
   * ![Screen Shot 2022-06-22 at 7 46 57 AM](https://user-images.githubusercontent.com/13190143/174914642-6f25375c-e12e-4197-9241-b1b2909670eb.png)
 
 #how to use
-1. locate the directory where you want to create your files
+1. open terminal or cmd
+2. locate the directory where you want to create your files
   * example: `cd /Volumes/Passport/projects/sample-redux-toolkit/sampleApp/src/feature`
-2. write mx-template-generator --name="<ADD YOUR FILENAME HERE>"
-  * 
+3. write `mx-template-generator --name="ADD YOUR FILENAME HERE"`
 3. npm package will automatically create the files from the `config.js` provided
 4. the name of the folder will have the first letter in lowercase 
   * example: --name="SampleFolder" foldername will be "sampleFolder"
