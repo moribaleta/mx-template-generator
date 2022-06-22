@@ -1,13 +1,13 @@
 {
   "name": "mx-template-generator",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "react script helpers",
   "main": "bin/index.js",
   "scripts": {
-    "react-dir-helper": "bin/index.js"
+    "mx-template-generator": "bin/index.js"
   },
   "bin": {
-    "react-dir-helper": "./bin/index.js"
+    "mx-template-generator": "./bin/index.js"
   },
   "preferGlobal": true,
   "author": "moribaleta",
