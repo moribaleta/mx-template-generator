@@ -15,7 +15,7 @@ const main = (args, pathName) => {
   }
 
   var fileName = getAttribute(args, '--name');
-  const templateName = getAttribute(args, '--template', 'main');
+  const templateName = getAttribute(args, '--template', 'template');
   const isOverride = getKeyExist(args, '--force');
 
   if (fileName.length <= 0 || pathName.length <= 0) {
@@ -38,7 +38,7 @@ const main = (args, pathName) => {
   if (configFilePath.length <= 0) {
     configFilePath = '../lib/templates/config.js';
   }
-  console.log("config file location: %o", configFilePath)
+  console.log('config file location: %o', configFilePath);
 
   const config = require(configFilePath);
 
@@ -49,7 +49,7 @@ const main = (args, pathName) => {
 
   configFilePath = configFilePath.replace('/config.js', '').replace('../', '');
 
-  console.log(config);
+  console.log('config: %o', config);
 
   if (existsSync(folderName) && !isOverride) {
     console.log('directory already exist');
@@ -62,9 +62,8 @@ const main = (args, pathName) => {
 
   console.log('templateName %s', templateName);
 
-  config[templateName].forEach((config) => {
-    createFile(configFilePath, config, folderName, fileName);
-  });
+  let templateConfig = config[templateName];
+  createFile(templateConfig, configFilePath, fileName);
 };
 
 const args = process.argv;
