@@ -12,12 +12,7 @@ npm i mx-template-generator -global
 
 1. create config file
 
-![Screen Shot 2022-06-22 at 7 48 13 AM](https://user-images.githubusercontent.com/13190143/174914678-9c710225-be15-40a2-aa2f-557efba8e7b3.png)
-
-- it is supposed to be an array containing an element with a `templateName` and `templateFile`
-- `templateName` - will be the name of the generated file
-  - you need to include the ${folderName} this will be the destination of the folder created
-- `templateFile` - this is the template that the file will be copied from
+![Screen Shot 2022-06-24 at 11 29 27 AM](https://user-images.githubusercontent.com/13190143/175456471-fe640eb5-2240-4678-b7d4-244c6c0edcbf.png)]
   - `${fileName}` will be replaced by the filename supplied from the command
   - ![Screen Shot 2022-06-22 at 7 48 42 AM](https://user-images.githubusercontent.com/13190143/174914722-34f33e54-e60c-4072-af72-81aff0508e19.png)
 
