@@ -36,7 +36,8 @@ const main = (args, pathName) => {
   var configFilePath = settingsObject.configPath;
 
   if (configFilePath.length <= 0) {
-    configFilePath = '../lib/templates/config.js';
+    configFilePath =
+      __dirname.replaceAll('/bin', '') + '/lib/templates/config.js';
   }
   console.log('config file location: %o', configFilePath);
 
@@ -61,6 +62,7 @@ const main = (args, pathName) => {
   });
 
   console.log('templateName %s', templateName);
+  console.log('config file path %s', configFilePath);
 
   let templateConfig = config[templateName];
   createFile(templateConfig, configFilePath, fileName);

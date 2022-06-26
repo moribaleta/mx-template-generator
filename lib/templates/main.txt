@@ -2,7 +2,7 @@ import React from 'react';
 import { ${fileName}Props } from './types';
 import { View } from 'react-native';
 import { useTheme } from 'src/lib/theme/Theme';
-import stylesCreator from './Styles';
+import stylesCreator from './styles';
 
 const ${fileName} = ({}: ${fileName}Props) => {
   const [styles, theme] = useTheme(stylesCreator);
