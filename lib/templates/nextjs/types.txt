@@ -1,0 +1,7 @@
+export interface ${fileName}Props {
+  //add your props here
+}
+
+export interface ${fileName}Hooks {
+  //add your props here
+}

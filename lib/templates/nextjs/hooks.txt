@@ -1,0 +1,9 @@
+import { ${fileName}Props, ${fileName}Hooks } from './types';
+
+const use${fileName}Hooks = (props: ${fileName}Props) : ${fileName}Hooks => {
+    return {
+
+    }
+}
+
+export default use${fileName}Hooks

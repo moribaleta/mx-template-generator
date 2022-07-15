@@ -1,0 +1,13 @@
+import React from 'react';
+import { ${fileName}Props } from './types';
+import use${fileName}Hooks from './hooks';
+import styles from './${fileName}.module.css';
+
+const ${fileName} = (props: ${fileName}Props) => {
+  const hooks = use${fileName}Hooks(props)
+  return (
+    <div className={styles.container}/>
+  );
+};
+
+export default ${fileName};
