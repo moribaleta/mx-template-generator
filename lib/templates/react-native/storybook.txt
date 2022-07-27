@@ -1,0 +1,12 @@
+import React from 'react';
+import ${fileName} from './${fileName}';
+import { ${fileName}Props } from './types';
+
+export default {
+  title: '${fileName}',
+  component: ${fileName},
+};
+
+export const Basic = (args: ${fileName}) => <${fileName} {...args} />;
+
+Basic.args = {};
