@@ -14,8 +14,11 @@ const main = (args, pathName) => {
     return;
   }
 
+  console.log('executed path %o', pathName)
+
   var fileName = getAttribute(args, '--name');
   const templateName = getAttribute(args, '--template', 'template');
+  let configPath = getAttribute(args, '--config');
   const isOverride = getKeyExist(args, '--force');
 
   if (fileName.length <= 0 || pathName.length <= 0) {
@@ -33,7 +36,11 @@ const main = (args, pathName) => {
     return;
   }
 
-  var configFilePath = settingsObject.configPath;
+  if (configPath) {
+    configPath = process.env.PROJECT_CWD + '/' + configPath 
+  }
+
+  var configFilePath = configPath ?? settingsObject.configPath;
 
   if (configFilePath.length <= 0) {
     configFilePath =
@@ -50,8 +57,6 @@ const main = (args, pathName) => {
 
   configFilePath = configFilePath.replace('/config.js', '').replace('../', '');
 
-  console.log('config: %o', config);
-
   if (existsSync(folderName) && !isOverride) {
     console.log('directory already exist');
     return;
@@ -61,14 +66,20 @@ const main = (args, pathName) => {
     recursive: true,
   });
 
+  let templateConfig = config[templateName];
+  
   console.log('templateName %s', templateName);
   console.log('config file path %s', configFilePath);
-
-  let templateConfig = config[templateName];
-  createFile(templateConfig, configFilePath, fileName);
+  console.log('template config %o', templateConfig);
+  
+  createFile(templateConfig, configFilePath, fileName, folderName);
 };
 
 const args = process.argv;
-const pathName = process.cwd();
+const terminalPath = process.env.INIT_CWD;
+const processPath = process.cwd()
+console.log('args %o', args)
+console.log('terminal %o \n process %o ', terminalPath, processPath );
+console.log('env %o', process.env)
 
-main(args, pathName);
+main(args, terminalPath ?? processPath);
