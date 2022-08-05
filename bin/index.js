@@ -6,20 +6,24 @@ const {
   lowerCaseFirstLetter,
   getAttribute,
   getKeyExist,
+  debugLog,
 } = require('../lib/utils');
 const { createFile, getSettingsFile } = require('../lib/templates');
 
-const main = (args, pathName) => {
+const main = (args, pathName, logger) => {
   if (args.length <= 0) {
     return;
   }
 
+  logger('executed path %o', pathName)
+
   var fileName = getAttribute(args, '--name');
   const templateName = getAttribute(args, '--template', 'template');
+  let configPath = getAttribute(args, '--config');
   const isOverride = getKeyExist(args, '--force');
 
   if (fileName.length <= 0 || pathName.length <= 0) {
-    console.log('filename not provided');
+    console.error('filename not provided');
     return;
   }
 
@@ -29,46 +33,64 @@ const main = (args, pathName) => {
   const settingsObject = getSettingsFile();
 
   if (!settingsObject) {
-    console.log('config settings doesnt exist');
+    console.error('config settings doesnt exist');
     return;
   }
 
-  var configFilePath = settingsObject.configPath;
+  if (configPath) {
+    configPath = process.env.PROJECT_CWD + '/' + configPath 
+  }
+
+  var configFilePath = configPath ?? settingsObject.configPath;
 
   if (configFilePath.length <= 0) {
     configFilePath =
       __dirname.replaceAll('/bin', '') + '/lib/templates/config.js';
   }
-  console.log('config file location: %o', configFilePath);
+  logger('config file location: %o', configFilePath);
 
   const config = require(configFilePath);
 
   if (!config) {
-    console.log('cannot find config.js from the given settings');
+    console.error('cannot find config.js from the given settings');
     return;
   }
 
   configFilePath = configFilePath.replace('/config.js', '').replace('../', '');
 
-  console.log('config: %o', config);
-
   if (existsSync(folderName) && !isOverride) {
-    console.log('directory already exist');
+    console.error('directory already exist');
     return;
   }
+
+  let templateConfig = config[templateName];
+
+  if (!templateConfig) {
+    console.error("template not found %o", templateName)
+    console.log("available templates %o", config)
+    return 
+  }
+  
+  logger('templateName %s', templateName);
+  logger('config file path %s', configFilePath);
+  logger('template config %o', templateConfig);
 
   mkdirSync(folderName, {
     recursive: true,
   });
-
-  console.log('templateName %s', templateName);
-  console.log('config file path %s', configFilePath);
-
-  let templateConfig = config[templateName];
-  createFile(templateConfig, configFilePath, fileName);
+  
+  createFile(templateConfig, configFilePath, fileName, folderName, logger);
 };
 
 const args = process.argv;
-const pathName = process.cwd();
+const terminalPath = process.env.INIT_CWD;
+const processPath = process.cwd()
+const isDebug = getKeyExist(args, '--debug');
+const logger = debugLog(isDebug)
 
-main(args, pathName);
+
+logger('args %o', args)
+logger('terminal %o \n process %o ', terminalPath, processPath );
+logger('env %o', process.env)
+
+main(args, terminalPath ?? processPath, logger);
