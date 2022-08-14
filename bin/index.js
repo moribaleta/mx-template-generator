@@ -15,7 +15,7 @@ const main = (args, pathName, logger) => {
     return;
   }
 
-  logger('executed path %o', pathName)
+  logger('executed path %o', pathName);
 
   var fileName = getAttribute(args, '--name');
   const templateName = getAttribute(args, '--template', 'template');
@@ -38,7 +38,11 @@ const main = (args, pathName, logger) => {
   }
 
   if (configPath) {
-    configPath = process.env.PROJECT_CWD + '/' + configPath 
+    configPath =
+      __dirname.replaceAll('node_modules/mx-template-generator/bin', '') +
+      '/' +
+      configPath;
+    //process.env.PROJECT_CWD + '/' + configPath
   }
 
   var configFilePath = configPath ?? settingsObject.configPath;
@@ -66,11 +70,11 @@ const main = (args, pathName, logger) => {
   let templateConfig = config[templateName];
 
   if (!templateConfig) {
-    console.error("template not found %o", templateName)
-    console.log("available templates %o", config)
-    return 
+    console.error('template not found %o', templateName);
+    console.log('available templates %o', config);
+    return;
   }
-  
+
   logger('templateName %s', templateName);
   logger('config file path %s', configFilePath);
   logger('template config %o', templateConfig);
@@ -78,19 +82,19 @@ const main = (args, pathName, logger) => {
   mkdirSync(folderName, {
     recursive: true,
   });
-  
+
   createFile(templateConfig, configFilePath, fileName, folderName, logger);
 };
 
 const args = process.argv;
 const terminalPath = process.env.INIT_CWD;
-const processPath = process.cwd()
+const processPath = process.cwd();
 const isDebug = getKeyExist(args, '--debug');
-const logger = debugLog(isDebug)
+const logger = debugLog(isDebug);
 
-
-logger('args %o', args)
-logger('terminal %o \n process %o ', terminalPath, processPath );
-logger('env %o', process.env)
+logger('__dirname %o', __dirname);
+logger('args %o', args);
+logger('terminal %o \n process %o ', terminalPath, processPath);
+logger('env %o', process.env);
 
 main(args, terminalPath ?? processPath, logger);
