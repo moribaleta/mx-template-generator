@@ -21,6 +21,7 @@ const main = (args, pathName, logger) => {
   const templateName = getAttribute(args, '--template', 'template');
   let configPath = getAttribute(args, '--config');
   const isOverride = getKeyExist(args, '--force');
+  const isAppened = getKeyExist(args, '--append');
 
   if (fileName.length <= 0 || pathName.length <= 0) {
     console.error('filename not provided');
@@ -62,7 +63,9 @@ const main = (args, pathName, logger) => {
 
   configFilePath = configFilePath.replace('/config.js', '').replace('../', '');
 
-  if (existsSync(folderName) && !isOverride) {
+  const folderExist = existsSync(folderName);
+
+  if (folderExist && !(isOverride || isAppened)) {
     console.error('directory already exist');
     return;
   }
@@ -79,11 +82,20 @@ const main = (args, pathName, logger) => {
   logger('config file path %s', configFilePath);
   logger('template config %o', templateConfig);
 
-  mkdirSync(folderName, {
-    recursive: true,
-  });
+  if (!folderExist || (folderExist && isOverride)) {
+    mkdirSync(folderName, {
+      recursive: true,
+    });
+  }
 
-  createFile(templateConfig, configFilePath, fileName, folderName, logger);
+  createFile(
+    templateConfig,
+    configFilePath,
+    fileName,
+    folderName,
+    logger,
+    isAppened,
+  );
 };
 
 const args = process.argv;
