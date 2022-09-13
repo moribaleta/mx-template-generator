@@ -2,11 +2,11 @@
 
 const { existsSync, mkdirSync } = require('fs');
 const {
-  capitalizeFirstLetter,
   lowerCaseFirstLetter,
   getAttribute,
   getKeyExist,
   debugLog,
+  getFoldername,
 } = require('../lib/utils');
 const { createFile, getSettingsFile } = require('../lib/templates');
 
@@ -18,17 +18,22 @@ const main = (args, pathName, logger) => {
   logger('executed path %o', pathName);
 
   var fileName = getAttribute(args, '--name');
+  var isAdd = getKeyExist(args, '--add');
   const templateName = getAttribute(args, '--template', 'template');
   let configPath = getAttribute(args, '--config');
   const isOverride = getKeyExist(args, '--force');
+  const isAppened = getKeyExist(args, '--append');
 
-  if (fileName.length <= 0 || pathName.length <= 0) {
+  if ((fileName.length <= 0 || pathName.length <= 0) && !isAdd) {
     console.error('filename not provided');
     return;
   }
 
-  fileName = capitalizeFirstLetter(fileName);
-  let folderName = pathName + '/' + lowerCaseFirstLetter(fileName);
+  fileName = getFoldername(pathName, fileName, isAdd); // isAdd ? pathName  capitalizeFirstLetter(fileName);
+
+  let folderName = isAdd
+    ? pathName
+    : pathName + '/' + lowerCaseFirstLetter(fileName);
 
   const settingsObject = getSettingsFile();
 
@@ -62,9 +67,17 @@ const main = (args, pathName, logger) => {
 
   configFilePath = configFilePath.replace('/config.js', '').replace('../', '');
 
-  if (existsSync(folderName) && !isOverride) {
+  const folderExist = existsSync(folderName);
+
+  if (folderExist && !(isOverride || isAppened) && !isAdd) {
     console.error('directory already exist');
     return;
+  }
+
+  if ((!folderExist || (folderExist && isOverride)) && !isAdd) {
+    mkdirSync(folderName, {
+      recursive: true,
+    });
   }
 
   let templateConfig = config[templateName];
@@ -79,11 +92,14 @@ const main = (args, pathName, logger) => {
   logger('config file path %s', configFilePath);
   logger('template config %o', templateConfig);
 
-  mkdirSync(folderName, {
-    recursive: true,
-  });
-
-  createFile(templateConfig, configFilePath, fileName, folderName, logger);
+  createFile(
+    templateConfig,
+    configFilePath,
+    fileName,
+    folderName,
+    logger,
+    isAppened,
+  );
 };
 
 const args = process.argv;
